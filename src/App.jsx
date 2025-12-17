@@ -1,0 +1,60 @@
+import './index.css';
+import Navbar from './components/navbar';
+import React, { useContext } from 'react';
+import { OverallContext } from './components/context/Overall';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Dashboard from './pages/home';
+import LoginComponent from './pages/login';
+import UserUpdate from './components/blocks/userupdate';
+import CreateTaskModal from './components/blocks/createTask';
+import SignupComponent from './pages/signup';
+
+function App() {
+  const { user } = useContext(OverallContext);
+
+  return (
+    <Router>
+      <div className="flex flex-col min-h-screen h-screen bg-gray-50">
+        <Navbar />
+
+        <div className="flex flex-1 relative bg-gray-50 overflow-hidden">
+          <main className="flex-1 overflow-auto">
+            {/* Overlay components for logged-in users */}
+            {user?.role && (
+              <>
+                <UserUpdate />
+                <CreateTaskModal />
+              </>
+            )}
+
+            {/* Single Routes block */}
+            <Routes>
+              {/* Dashboard only accessible if logged in */}
+              <Route
+                path="/"
+                element={user?.role ? <Dashboard /> : <Navigate to="/login" replace />}
+              />
+
+              {/* Login page accessible only if not logged in */}
+              <Route
+                path="/login"
+                element={!user?.role ? <LoginComponent /> : <Navigate to="/" replace />}
+              />
+
+              {/* Optional: signup route */}
+              <Route
+                path="/signup"
+                element={!user?.role ? <SignupComponent /> : <Navigate to="/" replace />}
+              />
+
+              {/* Catch-all redirect */}
+              <Route path="*" element={<Navigate to={user?.role ? "/" : "/login"} replace />} />
+            </Routes>
+          </main>
+        </div>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
