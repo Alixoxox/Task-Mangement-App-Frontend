@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import loginImg from '../assets/login.png'; // Ensure you have an image at this path
+import { OverallContext } from '../components/context/Overall';
+import { LoginUser } from '../components/utils/demo_data';
 
 export default function LoginComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-
-  const handleSubmit = (e) => {
+  const {user,setUser,showToast}=useContext(OverallContext)
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log('Login attempted with:', { email, password, rememberMe });
+    const User=await LoginUser({email,password});
+    if(!User.token){
+      showToast(User.message||"Login failed!", "error");
+    }else{
+    showToast("Logged in", "success");
+    setUser(User.users);
+    localStorage.setItem('user', User.token);
+    }
   };
 
   return (
@@ -63,20 +72,6 @@ export default function LoginComponent() {
                 />
               </div>
 
-              {/* Remember me checkbox */}
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 flex-shrink-0"
-                />
-                <label htmlFor="remember" className="ml-2 text-sm text-gray-600 select-none">
-                  Remember me {/* save to local storage */}
-                </label>
-              </div>
-
               {/* Sign in button */}
               <button
                 onClick={handleSubmit}
@@ -85,13 +80,13 @@ export default function LoginComponent() {
                 Sign In
               </button>
               
-{/* Signup redirect for new users */}
-<div className="pt-4 sm:pt-2 text-center text-sm text-gray-600">
-  Don't have an account?{' '}
-  <a href="/signup" className="text-blue-600 hover:underline">
-    Sign Up
-  </a>
-</div>
+              {/* Signup redirect for new users */}
+              <div className="pt-4 sm:pt-2 text-center text-sm text-gray-600">
+                Don't have an account?{' '}
+                <a href="/signup" className="text-blue-600 hover:underline">
+                  Sign Up
+                </a>
+              </div>
               {/* Additional spacing for mobile */}
               <div className="pt-4 sm:pt-0"></div>
             </div>

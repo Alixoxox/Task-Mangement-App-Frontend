@@ -10,7 +10,6 @@ export default function EditTaskModal({ isOpen, onClose, task, onUpdate }) {
         dueDate: ''
     });
 
-    // Populate form when task changes or modal opens
     useEffect(() => {
         if (task) {
             setFormData({
@@ -25,11 +24,9 @@ export default function EditTaskModal({ isOpen, onClose, task, onUpdate }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Create updated task object
         const updatedTask = {
             ...task,
             ...formData,
-            // Ensure date is stored consistently
             dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : null
         };
         

@@ -7,6 +7,7 @@ import {
   Activity
 } from 'lucide-react';
 import { OverallContext } from '../context/Overall';
+import { createTask } from '../utils/demo_data';
 
 const CreateTaskModal = () => {
   const { openCTaskModal, setOpenCTaskModal, saveTask } = useContext(OverallContext);
@@ -24,21 +25,18 @@ const CreateTaskModal = () => {
   const updateField = (field) => (e) =>
     setFormData({ ...formData, [field]: e.target.value });
 
-  const handleSubmit = () => {
-    // 1. Validation (Optional but good)
+  const handleSubmit = async() => {
     if (!formData.title) return alert("Title is required");
 
-    // 2. Format Data
     const formattedTask = {
       title: formData.title,
       dueDate: formData.dueDate,
       priority: formData.priority,
       status: formData.status,
       description: formData.description,
-    };
-
-    // 3. Save & Close
+    };    
     saveTask(formattedTask);
+    await createTask(formattedTask)
     close();
   };
 

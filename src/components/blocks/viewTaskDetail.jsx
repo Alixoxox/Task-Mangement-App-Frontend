@@ -14,7 +14,7 @@ const TaskDetailsModal = ({ task, onClose, onEdit, onDelete }) => {
         <div className="flex justify-between items-start p-6 border-b border-gray-100 bg-gray-50">
           <div>
             <h2 className="text-xl font-bold text-gray-900">{task.title}</h2>
-            <p className="text-sm text-gray-500 mt-1">Task ID: #{task.id}</p>
+            <p className="text-sm text-gray-500 mt-1">Task ID: #{task._id}</p>
           </div>
           <button 
             onClick={onClose}
@@ -71,7 +71,7 @@ const TaskDetailsModal = ({ task, onClose, onEdit, onDelete }) => {
             {/* Left Side: Edit/Delete */}
             <div className="flex gap-2">
                 <button 
-                    onClick={() => onDelete(task.id)}
+                    onClick={() => onDelete(task._id)}
                     className="flex items-center gap-2 px-3 py-2 bg-white border border-red-200 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 hover:border-red-300 transition-all shadow-sm"
                 >
                     <Trash2 className="w-4 h-4" />

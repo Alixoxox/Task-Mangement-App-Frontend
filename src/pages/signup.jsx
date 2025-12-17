@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import signupImg from '../assets/signup.jpg'; 
+import { CreateUser } from '../components/utils/demo_data';
+import { OverallContext } from '../components/context/Overall';
 
 export default function SignupComponent() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('intern'); // Default role
   const [agreeTerms, setAgreeTerms] = useState(false);
-
-  const handleSubmit = (e) => {
+  const { showToast,setUser } = useContext(OverallContext);
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Now creates a user with the specific role selected
-    console.log('Signup attempted with:', { name, email, password, role, agreeTerms });
+    if(password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;}
+      const UserD=await CreateUser({name,email,password});
+      console.log(UserD);
+      if(!UserD.token){
+        showToast(UserD.message||"Signup failed!", "error");
+      }else{
+        localStorage.setItem('user', UserD.token)
+        setUser(UserD.user);
+        showToast("Account created successfully!", "success");
+      }
   };
 
   return (
@@ -96,31 +107,6 @@ export default function SignupComponent() {
                   placeholder="••••••••••"
                   className="w-full px-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm sm:text-base"
                 />
-              </div>
-
-              {/* --- NEW ROLE DROPDOWN --- */}
-              <div>
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
-                  Select Role
-                </label>
-                <div className="relative">
-                  <select
-                    id="role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    className="w-full px-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm sm:text-base appearance-none bg-white"
-                  >
-                    <option value="intern">Intern</option>
-                    <option value="employee">Employee</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                  {/* Custom Arrow Icon for consistent UI */}
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                    </svg>
-                  </div>
-                </div>
               </div>
 
               {/* Agree to Terms checkbox */}

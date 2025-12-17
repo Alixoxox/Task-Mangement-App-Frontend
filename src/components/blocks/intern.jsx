@@ -6,6 +6,7 @@ import { Plus, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight } from
 import CreateTaskModal from '../../components/blocks/createTask';
 import TaskDetailsModal from '../../components/blocks/viewTaskDetail';
 import EditTaskModal from '../../components/blocks/EditTaskModel'; 
+import { deleteTaskById } from '../utils/demo_data';
 
 export default function InternDashboard() {
     // 1. Destructure logic from Context
@@ -28,10 +29,11 @@ export default function InternDashboard() {
     // --- Handlers ---
 
     // 1. Delete Logic
-    const handleDeleteTask = (taskId) => {
+    const handleDeleteTask = async(taskId) => {
         if (window.confirm("Are you sure you want to delete this task?")) {
             if (deleteTask) {
                 deleteTask(taskId);
+                await deleteTaskById(taskId);
             }
             setSelectedTask(null); // Close the detail modal
         }
@@ -131,14 +133,10 @@ export default function InternDashboard() {
     const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
     const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
     const indexOfLastItem = Math.min(indexOfFirstItem + itemsPerPage, totalFilteredTasks);
-
-    // --- Render ---
     return (
         <div>
-            {/* 1. Create Modal */}
             <CreateTaskModal />
             
-            {/* 2. View/Detail Modal (Passes Delete & Edit triggers) */}
             <TaskDetailsModal 
                 task={selectedTask} 
                 onClose={() => setSelectedTask(null)} 
@@ -146,7 +144,6 @@ export default function InternDashboard() {
                 onEdit={handleEditClick}
             />
 
-            {/* 3. Edit Modal */}
             <EditTaskModal 
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
@@ -195,7 +192,7 @@ export default function InternDashboard() {
                                     {paginatedTasks.length > 0 ? (
                                         paginatedTasks.map((task) => (
                                             <tr
-                                                key={task.id}
+                                                key={task._id}
                                                 onClick={() => setSelectedTask(task)}
                                                 className="hover:bg-red-50 cursor-pointer transition-colors"
                                             >

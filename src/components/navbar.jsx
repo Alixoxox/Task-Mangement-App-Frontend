@@ -21,7 +21,7 @@ const Navbar = () => {
           <button className="p-2 text-gray-600 hover:text-gray-900">
             <FaBell size={20} />
           </button>
-          {user.role ? (
+          {user?.email ? (
             <div className="flex items-center space-x-2 cursor-pointer" onClick={openModal}>
               <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                 <img src={usericon} alt="User Icon" className="w-full h-full rounded-full" />

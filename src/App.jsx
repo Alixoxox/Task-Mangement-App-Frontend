@@ -20,7 +20,7 @@ function App() {
         <div className="flex flex-1 relative bg-gray-50 overflow-hidden">
           <main className="flex-1 overflow-auto">
             {/* Overlay components for logged-in users */}
-            {user?.role && (
+            {user?.email && (
               <>
                 <UserUpdate />
                 <CreateTaskModal />
@@ -32,23 +32,22 @@ function App() {
               {/* Dashboard only accessible if logged in */}
               <Route
                 path="/"
-                element={user?.role ? <Dashboard /> : <Navigate to="/login" replace />}
+                element={user?.email ? <Dashboard /> : <Navigate to="/login" replace />}
               />
 
               {/* Login page accessible only if not logged in */}
               <Route
                 path="/login"
-                element={!user?.role ? <LoginComponent /> : <Navigate to="/" replace />}
+                element={!user?.email ? <LoginComponent /> : <Navigate to="/" replace />}
               />
 
-              {/* Optional: signup route */}
               <Route
                 path="/signup"
-                element={!user?.role ? <SignupComponent /> : <Navigate to="/" replace />}
+                element={!user?.email ? <SignupComponent /> : <Navigate to="/" replace />}
               />
 
               {/* Catch-all redirect */}
-              <Route path="*" element={<Navigate to={user?.role ? "/" : "/login"} replace />} />
+              <Route path="*" element={<Navigate to={user?.email ? "/" : "/login"} replace />} />
             </Routes>
           </main>
         </div>

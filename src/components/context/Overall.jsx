@@ -1,45 +1,96 @@
-import React from 'react'
-import { createContext, useState } from "react";
-import { myTasks } from '../utils/demo_data';
+import React, { createContext, useState } from "react";
+import toast, { Toaster } from 'react-hot-toast';
+
 export const OverallContext = createContext();
+
 export const OverallContextProvider = ({ children }) => {
-    const [user,setUser] = useState({
+    const [user, setUser] = useState({
         name: "",
         email: "",
-        role: "admin",
         id: ""
     });
-    const [tasks, setTasks] = useState(myTasks);
+    const showToast = (message, type = "success") => {
+        if (type === "success") {
+            toast.success(message);
+        } else if (type === "error") {
+            toast.error(message);
+        } else {
+            toast(message); // Info
+        }
+    };
+
+    const [tasks, setTasks] = useState([]);
+
     const saveTask = (newTaskData) => {
       const newTask = {
         ...newTaskData,
-        id: Date.now(), // Generate a unique ID
+        id: Date.now(), 
         status: newTaskData.status || "To Do",
         priority: newTaskData.priority || "Medium"
       };
       setTasks([newTask, ...tasks]); 
-      console.log("New Task Added:", newTask);
+      toast.success("Task created successfully!");
     };
+
     const deleteTask = (id) => {
-      setTasks((prev) => prev.filter((task) => task.id !== id));
+      setTasks((prev) => prev.filter((task) => task._id !== id));
+      toast.error("Task deleted.");
     };
   
-    // --- 3. Implement Update Task ---
     const updateTask = (updatedTask) => {
       setTasks((prev) => 
-        prev.map((task) => (task.id === updatedTask.id ? updatedTask : task))
+        prev.map((task) => (task._id === updatedTask.id ? updatedTask : task))
       );
+      toast.success("Task updated successfully!");
     };
     const [selected, setSelected] = useState("overview"); 
-    const [isModalOpen, setIsModalOpen] = useState(false); // for user update profile
-    const [openCTaskModal, setOpenCTaskModal] = useState(false); // Modal for creating new task
-    const [viewTask, setViewTask] = useState(false); // for viewing task details
-    const [taskData, setTaskData] = useState({}); // for storing task data
+    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [openCTaskModal, setOpenCTaskModal] = useState(false); 
+    const [viewTask, setViewTask] = useState(false); 
+    const [taskData, setTaskData] = useState({}); 
+
   return (
-    <OverallContext.Provider value={{viewTask, setViewTask,user,setUser,selected,tasks, setTasks,deleteTask ,updateTask,
-      saveTask, setSelected,isModalOpen, setIsModalOpen,openCTaskModal, setOpenCTaskModal,taskData, setTaskData}}>
+    <OverallContext.Provider value={{
+        viewTask, setViewTask,
+        user, setUser,
+        selected, setSelected,
+        tasks, setTasks,
+        deleteTask, updateTask, saveTask,
+        isModalOpen, setIsModalOpen,
+        openCTaskModal, setOpenCTaskModal,
+        taskData, setTaskData,
+        showToast
+    }}>
       {children}
+      {/* This is for Interactive Msg Popups */}
+      <Toaster 
+          position="top-right" 
+          reverseOrder={false}
+          toastOptions={{
+            duration: 3000,
+            style: {
+                background: '#333',
+                color: '#fff',
+                fontSize: '14px',
+            },
+            success: {
+                style: {
+                    background: 'white',
+                    color: 'green',
+                    border: '1px solid #d1fae5'
+                },
+            },
+            error: {
+                style: {
+                    background: 'white',
+                    color: 'red',
+                    border: '1px solid #fee2e2'
+                },
+            },
+          }} 
+      />
     </OverallContext.Provider>
   );
 };
+
 export default OverallContextProvider;
