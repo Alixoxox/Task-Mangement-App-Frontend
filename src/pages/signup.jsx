@@ -3,7 +3,7 @@ import signupImg from '../assets/signup.jpg';
 import { CreateUser } from '../components/utils/demo_data';
 import { OverallContext } from '../components/context/Overall';
 import { useNavigate } from 'react-router-dom';
-
+import validator from 'validator';
 export default function SignupComponent() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -14,9 +14,16 @@ export default function SignupComponent() {
   const navigate=useNavigate()
   const handleSubmit = async(e) => {
     e.preventDefault();
-    if(password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;}
+    if(agreeTerms){
+      if (password.length<7) {
+        return showToast("Password must be at least 8 characters", "error");
+      }
+      if(password !== confirmPassword) {
+        return showToast("Passwords do not match!","error");
+      }
+      if (!validator.isEmail(email)) {
+        return showToast("Invalid email address", "error");
+      }
       const UserD=await CreateUser({name,email,password});
       if(!UserD.token){
         showToast(UserD.message||"Signup failed!", "error");
@@ -25,7 +32,9 @@ export default function SignupComponent() {
         setUser(UserD.user);
         showToast("Account created successfully!", "success");
       }
-  };
+  }else{
+    showToast("You must agree to the Terms and Conditions", "error");
+  }}
   useEffect(() => {
   document.title = "Aykays | Signup";
   },[])
@@ -60,6 +69,7 @@ export default function SignupComponent() {
                 <input
                   type="text"
                   id="name"
+                  required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="John Doe"
@@ -75,6 +85,7 @@ export default function SignupComponent() {
                 <input
                   type="email"
                   id="email"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
@@ -90,6 +101,7 @@ export default function SignupComponent() {
                 <input
                   type="password"
                   id="password"
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••"
@@ -105,6 +117,7 @@ export default function SignupComponent() {
                 <input
                   type="password"
                   id="confirmPassword"
+                  required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••••"

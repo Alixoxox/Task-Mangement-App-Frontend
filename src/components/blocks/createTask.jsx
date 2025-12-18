@@ -10,7 +10,7 @@ import { OverallContext } from '../context/Overall';
 import { createTask } from '../utils/demo_data';
 
 const CreateTaskModal = () => {
-  const { openCTaskModal, setOpenCTaskModal, saveTask } = useContext(OverallContext);
+  const { openCTaskModal, setOpenCTaskModal, saveTask ,showToast} = useContext(OverallContext);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -26,7 +26,7 @@ const CreateTaskModal = () => {
     setFormData({ ...formData, [field]: e.target.value });
 
   const handleSubmit = async() => {
-    if (!formData.title) return alert("Title is required");
+    if (!formData.title) return showToast("Title is required","error");
 
     let formattedTask = {
       title: formData.title,
