@@ -28,15 +28,16 @@ const CreateTaskModal = () => {
   const handleSubmit = async() => {
     if (!formData.title) return alert("Title is required");
 
-    const formattedTask = {
+    let formattedTask = {
       title: formData.title,
       dueDate: formData.dueDate,
       priority: formData.priority,
       status: formData.status,
       description: formData.description,
     };    
+    const data=await createTask(formattedTask)
+    formattedTask={...formattedTask,_id:data._id}
     saveTask(formattedTask);
-    await createTask(formattedTask)
     close();
   };
 

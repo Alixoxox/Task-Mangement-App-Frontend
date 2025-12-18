@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { OverallContext } from '../components/context/Overall';
 
-import UserDashboard from '../components/blocks/intern';
+import UserDashboard from '../components/blocks/TaskManagement';
 import LoginComponent from './login';
 import { fetchTasks } from '../components/utils/demo_data';
 import { Users } from 'lucide-react';
@@ -15,6 +15,9 @@ export default function Dashboard() {
     };
     fetchData();
   }, [Users]);
+  useEffect(() => {
+  document.title = "Aykays | Task Dashboard";
+  },[])
   if(user) {
     return <UserDashboard />;
   }else{

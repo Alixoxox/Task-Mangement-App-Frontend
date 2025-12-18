@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import signupImg from '../assets/signup.jpg'; 
 import { CreateUser } from '../components/utils/demo_data';
 import { OverallContext } from '../components/context/Overall';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignupComponent() {
   const [name, setName] = useState('');
@@ -10,13 +11,13 @@ export default function SignupComponent() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
   const { showToast,setUser } = useContext(OverallContext);
+  const navigate=useNavigate()
   const handleSubmit = async(e) => {
     e.preventDefault();
     if(password !== confirmPassword) {
       alert("Passwords do not match!");
       return;}
       const UserD=await CreateUser({name,email,password});
-      console.log(UserD);
       if(!UserD.token){
         showToast(UserD.message||"Signup failed!", "error");
       }else{
@@ -25,7 +26,9 @@ export default function SignupComponent() {
         showToast("Account created successfully!", "success");
       }
   };
-
+  useEffect(() => {
+  document.title = "Aykays | Signup";
+  },[])
   return (
     <div className="min-h-[calc(100vh-6rem)] flex items-center justify-center p-4 bg-gray-50">
       <div className="w-full max-w-5xl bg-white shadow-2xl rounded-lg overflow-hidden flex flex-col lg:flex-row">
@@ -132,7 +135,7 @@ export default function SignupComponent() {
               </button>
 
               <div className="pt-4 sm:pt-0 text-center text-sm text-gray-500">
-                Already have an account? <a href="/login" className="text-blue-600 hover:underline">Sign In</a>
+                Already have an account? <span href="/login" className="text-blue-600 hover:underline cursor-pointer" onClick={() => navigate('/login')}>Sign In</span>
               </div>
             </div>
           </div>

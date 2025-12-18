@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaFacebookF, FaTwitter, FaGithub, FaDribbble } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaGithub, FaDribbble, FaLinkedin, FaBehance, FaMedium } from 'react-icons/fa';
 
 export default function Footer() {
   return (
@@ -8,22 +8,25 @@ export default function Footer() {
         
         {/* Left: Text */}
         <p className="text-sm text-gray-500">
-          © 2025 Bewhoop Pvt Ltd. All rights reserved.
+          © 2025 Aykays Agency. All rights reserved.
         </p>
 
         {/* Right: Social icons */}
         <div className="flex items-center space-x-4 text-gray-800 text-sm">
-          <a href="#" aria-label="Facebook" className="hover:text-blue-600">
+          <a href="https://www.facebook.com/AykaysAgency/" target="_blank" aria-label="Facebook" className="hover:text-blue-600" >
             <FaFacebookF size={18} />
           </a>
-          <a href="#" aria-label="Twitter" className="hover:text-blue-400">
-            <FaTwitter size={18}/>
+          <a href="https://www.behance.net/aykaysagency" target="_blank" aria-label="Behance" className="hover:text-blue-400">
+            <FaBehance size={18}/>
           </a>
-          <a href="#" aria-label="GitHub" className="hover:text-gray-600">
-            <FaGithub size={18}/>
+          <a href="https://medium.com/@paulrivera0019" target="_blank" aria-label="Medium" className="hover:text-gray-600" >
+            <FaMedium size={18}/>
           </a>
-          <a href="#" aria-label="Dribbble" className="hover:text-pink-500">
+          <a href="https://aykays.com/" target="_blank" aria-label="Dribbble" className="hover:text-pink-500">
             <FaDribbble size={18}/>
+          </a>
+          <a href="https://www.linkedin.com/company/aykays/posts/?feedView=all" target="_blank"  aria-label="Linkedin" className="hover:text-blue-400">
+            <FaLinkedin size={18}/>
           </a>
         </div>
       </div>

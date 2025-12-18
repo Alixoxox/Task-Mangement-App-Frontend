@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
+import { updateTaskByid } from "../utils/demo_data";
 
 export const OverallContext = createContext();
 
@@ -36,11 +37,12 @@ export const OverallContextProvider = ({ children }) => {
       setTasks((prev) => prev.filter((task) => task._id !== id));
       toast.error("Task deleted.");
     };
-  
+    
     const updateTask = (updatedTask) => {
       setTasks((prev) => 
-        prev.map((task) => (task._id === updatedTask.id ? updatedTask : task))
+        prev.map((task) => (task._id === updatedTask._id ? updatedTask : task))
       );
+      updateTaskByid(updatedTask);
       toast.success("Task updated successfully!");
     };
     const [selected, setSelected] = useState("overview"); 

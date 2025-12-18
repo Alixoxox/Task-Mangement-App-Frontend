@@ -1,52 +1,42 @@
 import React, { useContext, useState, useMemo } from 'react';
-import Footer from '../../components/footer';
-import { getPriorityColor, getStatusColor } from '../../components/utils/fuctions';
-import { OverallContext } from '../../components/context/Overall';
+import Footer from '../footer';
+import { getPriorityColor, getStatusColor } from '../utils/fuctions';
+import { OverallContext } from '../context/Overall';
 import { Plus, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight } from 'lucide-react';
-import CreateTaskModal from '../../components/blocks/createTask';
-import TaskDetailsModal from '../../components/blocks/viewTaskDetail';
-import EditTaskModal from '../../components/blocks/EditTaskModel'; 
+import CreateTaskModal from './createTask';
+import TaskDetailsModal from './viewTaskDetail';
+import EditTaskModal from './EditTaskModel'; 
 import { deleteTaskById } from '../utils/demo_data';
 
-export default function InternDashboard() {
-    // 1. Destructure logic from Context
+export default function TaskManagementDashboard() {
     const { tasks, setOpenCTaskModal, deleteTask, updateTask } = useContext(OverallContext);
-
-    // --- UI States ---
     const [priorityFilter, setPriorityFilter] = useState('All');
     const [showFutureOnly, setShowFutureOnly] = useState(false);
     
-    // --- Modal States ---
     const [selectedTask, setSelectedTask] = useState(null); // Viewing
     const [editingTask, setEditingTask] = useState(null);   // Editing
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    // --- Sorting/Pagination States ---
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'default' });
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
-    // --- Handlers ---
-
-    // 1. Delete Logic
     const handleDeleteTask = async(taskId) => {
         if (window.confirm("Are you sure you want to delete this task?")) {
             if (deleteTask) {
                 deleteTask(taskId);
                 await deleteTaskById(taskId);
             }
-            setSelectedTask(null); // Close the detail modal
+            setSelectedTask(null); 
         }
     };
 
-    // 2. Edit Logic (Opens the Edit Modal)
     const handleEditClick = (task) => {
-        setEditingTask(task);      // Load task into state
-        setSelectedTask(null);     // Close Detail Modal
-        setIsEditModalOpen(true);  // Open Edit Modal
+        setEditingTask(task);     
+        setSelectedTask(null);     
+        setIsEditModalOpen(true); 
     };
 
-    // 3. Update Logic (Called from Edit Modal)
     const handleUpdateTask = (updatedTaskObj) => {
         if (updateTask) {
             updateTask(updatedTaskObj);
@@ -55,9 +45,7 @@ export default function InternDashboard() {
         setEditingTask(null);
     };
 
-    // --- Data Processing (Filter -> Sort -> Paginate) ---
     const paginatedTasks = useMemo(() => {
-        // A. Filter
         let filtered = tasks.filter((task) => {
             const matchesPriority = priorityFilter === 'All' || task.priority === priorityFilter;
             const today = new Date();
@@ -66,7 +54,6 @@ export default function InternDashboard() {
             return matchesPriority && matchesDate;
         });
 
-        // B. Sort
         if (sortConfig.key && sortConfig.direction !== 'default') {
             filtered.sort((a, b) => {
                 let aValue = a[sortConfig.key];
@@ -89,12 +76,10 @@ export default function InternDashboard() {
             });
         }
 
-        // C. Paginate
         const start = (currentPage - 1) * itemsPerPage;
         return filtered.slice(start, start + itemsPerPage);
     }, [tasks, priorityFilter, showFutureOnly, sortConfig, currentPage]);
 
-    // Calculate Totals for Pagination UI
     const totalFilteredTasks = useMemo(() => {
         return tasks.filter((task) => {
             const matchesPriority = priorityFilter === 'All' || task.priority === priorityFilter;
@@ -107,7 +92,6 @@ export default function InternDashboard() {
 
     const totalPages = Math.ceil(totalFilteredTasks / itemsPerPage);
 
-    // --- Sort/Page Helpers ---
     const requestSort = (key) => {
         let direction = 'ascending';
         if (sortConfig.key === key) {
@@ -151,7 +135,7 @@ export default function InternDashboard() {
                 onUpdate={handleUpdateTask}
             />
 
-            <div className="min-h-screen p-4 sm:p-6 lg:p-8 overflow-x-auto">
+            <div className="h-[80vh] p-4 sm:p-6 lg:p-8 overflow-x-auto">
                 <div className="max-w-7xl mx-auto space-y-8">
                     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
 
@@ -192,7 +176,7 @@ export default function InternDashboard() {
                                     {paginatedTasks.length > 0 ? (
                                         paginatedTasks.map((task) => (
                                             <tr
-                                                key={task._id}
+                                                key={task._id||task.id}
                                                 onClick={() => setSelectedTask(task)}
                                                 className="hover:bg-red-50 cursor-pointer transition-colors"
                                             >
@@ -263,7 +247,7 @@ export default function InternDashboard() {
                     </div>
                 </div>
             </div>
-            <Footer />
+                <Footer/>
         </div>
     );
 }

@@ -22,7 +22,6 @@
     }
   };
   export const LoginUser = async ({email, password}) => {
-    console.log(BASE_URL,email,password);
     if (!email || !password) {
       return { message: "All fields are required" };
     }
@@ -112,42 +111,42 @@ export const fetchTasks = async () => {
       return { error: "Something went wrong" };
     }
   }
-
-  export const updateTask = async ({id, title, description, status, priority, dueDate}) => {
+  export const updateTaskByid = async (taskData) => {
+    const token = localStorage.getItem('user');
     
-    const token=localStorage.getItem('user');
+    // Explicitly create the payload with the 'id' key the backend wants
+    const payload = {
+        ...taskData,
+        id: taskData._id || taskData.id // Map _id to id
+    };
+
     try {
-      const res = await fetch(
-        `${BASE_URL}/api/users/update/note`,
-        {
+      const res = await fetch(`${BASE_URL}/api/users/update/note`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
           },
-          body: JSON.stringify({ id, title, description, status, priority, dueDate }),
+          body: JSON.stringify(payload), // Send the payload
         }
       );
-      const data = await res.json();
-      return data;
+      return await res.json();
     } catch (error) {
       console.error(error);
       return { error: "Something went wrong" };
     }
-  }
+}
   export const deleteTaskById = async (id) => {
     const token=localStorage.getItem('user');
     try {
       const res = await fetch(
-        `${BASE_URL}/api/users/delete/note`,
+        `${BASE_URL}/api/users/delete/note/${id}`,
         {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify({ id }),
-        }
+          }        }
       );
       const data = await res.json();
       return data;

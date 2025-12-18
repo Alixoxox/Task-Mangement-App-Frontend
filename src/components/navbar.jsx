@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { FaBell } from 'react-icons/fa'
 import logo from '../assets/logo.png'
 import usericon from '../assets/user.png'
 import { CgEnter } from "react-icons/cg";
@@ -9,7 +8,7 @@ import { OverallContext } from './context/Overall';
 const Navbar = () => {
   const navigate = useNavigate();
   const { user,setIsModalOpen } = useContext(OverallContext);
-  const openModal = () => {setIsModalOpen(true); console.log("Modal should open");};
+  const openModal = () => {setIsModalOpen(true);};
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 h-16 flex-shrink-0">
@@ -18,9 +17,6 @@ const Navbar = () => {
           <img src={logo} alt="Logo" className="h-8 w-auto object-contain" />
         </div>
         <div className="flex items-center space-x-4">
-          <button className="p-2 text-gray-600 hover:text-gray-900">
-            <FaBell size={20} />
-          </button>
           {user?.email ? (
             <div className="flex items-center space-x-2 cursor-pointer" onClick={openModal}>
               <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">

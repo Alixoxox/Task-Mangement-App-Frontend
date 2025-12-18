@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import loginImg from '../assets/login.png'; // Ensure you have an image at this path
 import { OverallContext } from '../components/context/Overall';
 import { LoginUser } from '../components/utils/demo_data';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const {user,setUser,showToast}=useContext(OverallContext)
+  const navigate=useNavigate()
   const handleSubmit = async(e) => {
     e.preventDefault();
     const User=await LoginUser({email,password});
@@ -19,7 +21,9 @@ export default function LoginComponent() {
     localStorage.setItem('user', User.token);
     }
   };
-
+  useEffect(() => {
+  document.title = "Aykays | Login";
+  },[])
   return (
     <div className="min-h-[calc(100vh-6rem)] flex items-center justify-center p-4 bg-gray-50">
       <div className="w-full max-w-5xl bg-white shadow-2xl rounded-lg overflow-hidden flex flex-col lg:flex-row">
@@ -83,9 +87,9 @@ export default function LoginComponent() {
               {/* Signup redirect for new users */}
               <div className="pt-4 sm:pt-2 text-center text-sm text-gray-600">
                 Don't have an account?{' '}
-                <a href="/signup" className="text-blue-600 hover:underline">
+                <span  className="text-blue-600 hover:underline cursor-pointer" onClick={() => navigate('/signup')}>
                   Sign Up
-                </a>
+                </span>
               </div>
               {/* Additional spacing for mobile */}
               <div className="pt-4 sm:pt-0"></div>

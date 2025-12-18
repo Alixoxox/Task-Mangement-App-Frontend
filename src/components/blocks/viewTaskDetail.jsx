@@ -14,7 +14,7 @@ const TaskDetailsModal = ({ task, onClose, onEdit, onDelete }) => {
         <div className="flex justify-between items-start p-6 border-b border-gray-100 bg-gray-50">
           <div>
             <h2 className="text-xl font-bold text-gray-900">{task.title}</h2>
-            <p className="text-sm text-gray-500 mt-1">Task ID: #{task._id}</p>
+            <p className="text-sm text-gray-500 mt-1">Task ID: #{task._id||task.id}</p>
           </div>
           <button 
             onClick={onClose}
