@@ -5,9 +5,7 @@ import App from './App.jsx'
 import OverallContextProvider from './components/context/Overall'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <OverallContextProvider> 
     <App />
     </OverallContextProvider> 
-  </StrictMode>,
 )

@@ -156,4 +156,12 @@ export const fetchTasks = async () => {
     }
   }
 
+  export const checkServer = async () => {
+    try {
+      await fetch(`${BASE_URL}/api/users/checkServer`);
+      return ;
+    } catch (error) {
+      return "error";
+    }
+  }
   

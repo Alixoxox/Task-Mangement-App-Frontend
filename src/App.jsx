@@ -1,6 +1,6 @@
 import './index.css';
 import Navbar from './components/navbar';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { OverallContext } from './components/context/Overall';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './pages/home';
@@ -8,10 +8,16 @@ import LoginComponent from './pages/login';
 import UserUpdate from './components/blocks/userupdate';
 import CreateTaskModal from './components/blocks/createTask';
 import SignupComponent from './pages/signup';
+import { checkServer } from './components/utils/demo_data';
 
 function App() {
-  const { user } = useContext(OverallContext);
-
+  const { user,showToast } = useContext(OverallContext);
+  useEffect(() => {
+    let msg=checkServer()
+    if(msg){
+      showToast("Please wait a moment, the server is starting up.", "info");
+    }
+  },[])
   return (
     <Router>
       <div className="flex flex-col min-h-screen h-screen bg-gray-50">
