@@ -38,7 +38,7 @@ A modern, responsive Task Management dashboard built with **React**, **Tailwind 
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/Alixoxox/Task-Management-App-Frontend.git](https://github.com/Alixoxox/Task-Management-App-Frontend.git)
+    git clone https://github.com/Alixoxox/Task-Management-App-Frontend.git
     cd Task-Management-App-Frontend
     ```
 
