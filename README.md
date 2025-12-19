@@ -50,7 +50,7 @@ A modern, responsive Task Management dashboard built with **React**, **Tailwind 
 3.  **Setup Environment Variables:**
     Create a `.env` file in the root directory and add your backend URL:
     ```env
-    VITE_BACKEND_URL=[https://task-management-app-backend-k7o1.onrender.com](https://task-management-app-backend-k7o1.onrender.com)
+    VITE_BACKEND_URL=https://task-management-app-backend-k7o1.onrender.com
     ```
 
 4.  **Run the development server:**
