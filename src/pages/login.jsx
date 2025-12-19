@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import loginImg from '../assets/login.png'; // Ensure you have an image at this path
+import loginImg from '../assets/login.webp'; // Ensure you have an image at this path
 import { OverallContext } from '../components/context/Overall';
 import { LoginUser } from '../components/utils/demo_data';
 import { useNavigate } from 'react-router-dom';
@@ -32,6 +32,8 @@ export default function LoginComponent() {
         <div className="hidden lg:flex flex-1 bg-white relative p-6 sm:p-8 lg:p-12 items-center justify-center order-2 lg:order-1">
         <div className="w-full max-w-md lg:max-w-none">
             <img 
+              loading="lazy"
+              decoding="async"
               src={loginImg} 
               alt="Login illustration" 
               className="w-full h-auto object-contain max-h-64 sm:max-h-80 lg:max-h-none" />

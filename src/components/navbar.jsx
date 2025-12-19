@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import logo from '../assets/logo.png'
-import usericon from '../assets/user.png'
+import logo from '../assets/logo.webp'
+import usericon from '../assets/user.webp'
 import { CgEnter } from "react-icons/cg";
 import { useNavigate } from 'react-router-dom';
 import { OverallContext } from './context/Overall';
@@ -14,13 +14,13 @@ const Navbar = () => {
     <header className="bg-white shadow-sm border-b border-gray-200 h-16 flex-shrink-0">
       <div className="flex items-center justify-between px-6 h-full">
         <div className="flex items-center space-x-4 cursor-pointer">
-          <img src={logo} alt="Logo" className="h-8 w-auto object-contain" />
+          <img src={logo} alt="Logo" loading="lazy" decoding="async" className="h-8 w-auto object-contain" />
         </div>
         <div className="flex items-center space-x-4">
           {user?.email ? (
             <div className="flex items-center space-x-2 cursor-pointer" onClick={openModal}>
               <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <img src={usericon} alt="User Icon" className="w-full h-full rounded-full" />
+                <img src={usericon} alt="User Icon" loading="lazy" decoding="async" className="w-full h-full rounded-full" />
               </div>
             </div>
           ) : (
